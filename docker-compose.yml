@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  manga_db:
+    image: postgres:latest
+    container_name: manga_db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD} 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  back:
+    container_name: manga_back
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    command: bash ../entrypoints.sh
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - ./src/back_static:/back_static
+    ports:
+      - "8020:8020"
+    depends_on:
+      - manga_db
+    links:
+      - manga_db
+
+volumes:
+  postgres_data:
