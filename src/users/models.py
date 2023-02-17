@@ -9,7 +9,7 @@ from .managers import UserManager
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=50, unique=True)
     phone = PhoneNumberField(null=True, blank=True, verbose_name="Номер телефона")
-    image = models.UUIDField(null=True, blank=True, verbose_name="Ссылка на картинку из другого источника")
+    image = models.URLField(null=True, blank=True, verbose_name="Ссылка на картинку из другого источника")
     image_file = models.ImageField(
         default="default_media/avatar.jpg",
         upload_to="uploaded_media",
@@ -34,14 +34,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Комментатор")
     manga = models.ForeignKey(
-        "manga.Manga", on_delete=models.CASCADE, related_name="manga_comments"
+        "manga.Manga", on_delete=models.CASCADE, related_name="manga_comments",
+        verbose_name="Манга"
     )
-    text = models.TextField()
+    text = models.CharField(max_length=255, null=False, blank=False, verbose_name="Текст")
 
     def __str__(self):
-        return f"{self.user} commented manga :{self.manga}"
+        return f"{self.user} Прокомментровал {self.manga}"
 
     class Meta:
         verbose_name = "Комментарий"

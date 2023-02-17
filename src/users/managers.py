@@ -7,9 +7,12 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
+
+    def create_superuser(self, username, password, **extra):
+        admin = self.model(username=username, password=password, is_superuser=True, is_staff=True, **extra)
+        admin.set_password(password)
+        admin.save(using=self._db)
+        return admin
     
     def create_user(self, username, phone, image, password):
         return self._create_user(username, phone, image, password)
-
-    def create_superuser(self, username, password):
-        return self._create_user(username, password, is_superuser=True, is_staff=True)

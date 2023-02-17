@@ -11,6 +11,10 @@ PRODUCTION = env("PRODUCTION", default=False, cast=bool)
 
 ALLOWED_HOSTS = env("ALLOWED_HOSTS", cast=csv())
 
+#User
+AUTH_USER_MODEL = "users.User"
+
+
 # Application definition
 
 LOCAL_APPS = [
