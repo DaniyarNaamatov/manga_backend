@@ -34,16 +34,21 @@ class Scrap:
         manga_instance = Manga.objects.all()
         if len(manga_instance) > 0:
             for i in range(1, 100):
-                url = f"https://api.remanga.org/api/activity/comments/?title_id={str(i)}&page=2&ordering=&count=20"
-                response = requests.get(url=url, headers=cls.HEADERS)
-                data = response.json()
-                for h in Manga.objects.all():
-                    for i in data["content"]:
-                        Comment.objects.create(
-                            user=random.choice(User.objects.all()),
-                            text=i["text"],
-                            manga=h,
-                        )
+                instance = Manga.objects.all().values_list("title_id", flat=True)
+                for i in instance:
+                    url = f"https://api.remanga.org/api/activity/comments/?title_id={i}&page=2&ordering=&count=20"
+                    response = requests.get(url=url, headers=cls.HEADERS)
+                    data = response.json()
+                    for h in Manga.objects.filter(title_id=i):
+                        for i in data["content"]:
+                            try:
+                                Comment.objects.create(
+                                    user=random.choice(User.objects.all()),
+                                    text=i["text"],
+                                    manga=h,
+                                )
+                            except TypeError:
+                                continue
         print("Can't find manga")
 
     @classmethod
@@ -61,6 +66,7 @@ class Scrap:
                 url2 = f"https://api.remanga.org/api/titles/" + item["dir"] + "/"
                 genre_filter_set = item["genres"]
                 manga = Manga.objects.create(
+                    title_id=item["id"],
                     en_name=item["en_name"],
                     ru_name=item["rus_name"],
                     slug=item["dir"],

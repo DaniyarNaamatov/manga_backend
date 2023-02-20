@@ -14,6 +14,9 @@ class Genre(BaseModel):
 
 
 class Manga(BaseModel):
+    title_id = models.IntegerField(
+        unique=True, verbose_name="Индентификатор", null=True, blank=True
+    )
     en_name = models.CharField(max_length=200, verbose_name="Название на английском")
     ru_name = models.CharField(max_length=200, verbose_name="Название на русском")
     slug = models.SlugField(

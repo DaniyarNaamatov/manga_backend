@@ -29,6 +29,7 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "drf_multiple_model",
     "phonenumber_field",
+    "rest_framework_simplejwt",
 ]
 
 THEME_APPS = [
@@ -127,16 +128,19 @@ MEDIUM_THUMBNAIL_SIZE = 1024, 1024
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    #'DEFAULT_RENDERER_CLASSES': [
-    #    'rest_framework.renderers.JSONRenderer',
-    # ],
-    #'DEFAULT_PARSER_CLASSES': [
-    #    'rest_framework.parsers.JSONParser',
-    # ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     "DATE_INPUT_FORMATS": ["%d.%m.%Y"],
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
 
 

@@ -8,4 +8,5 @@ class MangaListApiView(generics.ListAPIView):
     queryset = Manga.objects.filter(is_deleted=False)
     serializer_class = ManagaSerializer
 
+
 # Create your views here.

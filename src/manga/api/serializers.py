@@ -4,14 +4,15 @@ from users.models import Comment, User
 
 
 class GenreSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Genre
-        fields = ("id", "title",)
+        fields = (
+            "id",
+            "title",
+        )
 
 
 class ManagaSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Manga
         fields = (
@@ -25,12 +26,11 @@ class ManagaSerializer(serializers.ModelSerializer):
             "genre",
             "likes",
             "views",
-            "rating"
+            "rating",
         )
 
 
 class MangaDetailSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Manga
         fields = (
@@ -44,8 +44,8 @@ class MangaDetailSerializer(serializers.ModelSerializer):
             "genre",
             "likes",
             "views",
-            "rating"
-            )
+            "rating",
+        )
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

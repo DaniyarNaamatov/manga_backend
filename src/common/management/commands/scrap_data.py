@@ -7,6 +7,10 @@ class Command(BaseCommand):
 
     def handle(self, *args: any, **options: any) -> object:
         # create_genre(self)
+        # print("---------------Genre created---------------")
         # Scrap.scrap_users()
+        # print("---------------Users created---------------")
         # Scrap.scrap_manga()
+        # print("---------------Manga created---------------")
         Scrap.scrap_comments()
+        print("---------------Comments created---------------")

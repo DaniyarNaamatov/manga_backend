@@ -4,9 +4,11 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from phonenumber_field.modelfields import PhoneNumberField
 
 from .managers import UserManager
+from common.models import BaseModel
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin, BaseModel):
+    email = models.EmailField(null=True, unique=True, blank=True, verbose_name="Почта")
     username = models.CharField(max_length=50, unique=True)
     phone = PhoneNumberField(null=True, blank=True, verbose_name="Номер телефона")
     image = models.URLField(
@@ -35,7 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = "Пользователи"
 
 
-class Comment(models.Model):
+class Comment(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Комментатор")
     manga = models.ForeignKey(
         "manga.Manga",
