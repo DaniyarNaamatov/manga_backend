@@ -13,7 +13,7 @@ class Scrap:
         "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:106.0) Gecko/20100101 Firefox/106.0",
     }
     domen = "https://remanga.org"
-    media_domen = "https://remanga.org/media/"
+    media_domen = "https://remanga.org"
 
     @classmethod
     def scrap_users(cls):

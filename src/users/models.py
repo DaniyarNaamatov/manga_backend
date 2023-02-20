@@ -15,8 +15,8 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         null=True, blank=True, verbose_name="Ссылка на картинку из другого источника"
     )
     image_file = models.ImageField(
-        default="default_media/avatar.jpg",
-        upload_to="uploaded_media",
+        default="back_media/manga_user.png",
+        upload_to="back_media/uploaded_media",
         null=True,
         blank=True,
         verbose_name="Картинка",
