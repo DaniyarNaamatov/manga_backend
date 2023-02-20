@@ -2,7 +2,7 @@ from django.db import models
 from common.models import BaseModel
 
 
-class Genre(models.Model):
+class Genre(BaseModel):
     title = models.CharField(max_length=250, verbose_name="Имя жанра")
 
     class Meta:

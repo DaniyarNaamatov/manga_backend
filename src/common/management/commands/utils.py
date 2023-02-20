@@ -31,17 +31,19 @@ class Scrap:
 
     @classmethod
     def scrap_comments(cls):
-        response = requests.get(url=cls.url_comments, headers=cls.HEADERS)
-        data = response.json()
         manga_instance = Manga.objects.all()
         if len(manga_instance) > 0:
-            for h in Manga.objects.all():
-                for i in data["content"]:
-                    Comment.objects.create(
-                        user=random.choice(User.objects.all()),
-                        text=i["text"],
-                        manga=h,
-                    )
+            for i in range(1, 100):
+                url = f"https://api.remanga.org/api/activity/comments/?title_id={str(i)}&page=2&ordering=&count=20"
+                response = requests.get(url=url, headers=cls.HEADERS)
+                data = response.json()
+                for h in Manga.objects.all():
+                    for i in data["content"]:
+                        Comment.objects.create(
+                            user=random.choice(User.objects.all()),
+                            text=i["text"],
+                            manga=h,
+                        )
         print("Can't find manga")
 
     @classmethod
@@ -133,5 +135,5 @@ def create_genre(self, *args, **kwargs):
         Genre.objects.get_or_create(title="Этти")
         Genre.objects.get_or_create(title="Юри")
         Genre.objects.get_or_create(title="Яой")
-    except: 
+    except:
         return False

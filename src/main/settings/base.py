@@ -11,7 +11,7 @@ PRODUCTION = env("PRODUCTION", default=False, cast=bool)
 
 ALLOWED_HOSTS = env("ALLOWED_HOSTS", cast=csv())
 
-#User
+# User
 AUTH_USER_MODEL = "users.User"
 
 
