@@ -17,8 +17,8 @@ class Scrap:
 
     @classmethod
     def scrap_users(cls):
-        for page in range(20, 40):
-            url = f"https://api.remanga.org/api/activity/comments/?title_id=8813&page={str(page)}&ordering=&count=20"
+        for page in range(10, 100):
+            url = f"https://api.remanga.org/api/activity/comments/?title_id=80{str(page)}{str(page)}&page={str(page)}&ordering=&count=20"
 
             response = requests.get(url=url, headers=cls.HEADERS)
             data = response.json()
@@ -28,32 +28,36 @@ class Scrap:
                     image=cls.media_domen + i["user"]["avatar"]["high"],
                     password="useruser123",
                 )
+                if User.objects.filter(username=i["user"]["username"]).exists():
+                    continue
 
     @classmethod
     def scrap_comments(cls):
         manga_instance = Manga.objects.all()
         if len(manga_instance) > 0:
-            for i in range(1, 100):
-                instance = Manga.objects.all().values_list("title_id", flat=True)
-                for i in instance:
-                    url = f"https://api.remanga.org/api/activity/comments/?title_id={i}&page=2&ordering=&count=20"
-                    response = requests.get(url=url, headers=cls.HEADERS)
-                    data = response.json()
-                    for h in Manga.objects.filter(title_id=i):
-                        for i in data["content"]:
-                            try:
-                                Comment.objects.create(
-                                    user=random.choice(User.objects.all()),
-                                    text=i["text"],
-                                    manga=h,
-                                )
-                            except TypeError:
-                                continue
+            while manga_instance.count() < 4000:
+                for i in range(1, 100):
+                    instance = Manga.objects.all().values_list("title_id", flat=True)
+                    for i in instance:
+                        url = f"https://api.remanga.org/api/activity/comments/?title_id={i}&page=2&ordering=&count=20"
+                        response = requests.get(url=url, headers=cls.HEADERS)
+                        data = response.json()
+                        for h in Manga.objects.filter(title_id=i):
+                            for i in data["content"]:
+                                try:
+                                    Comment.objects.create(
+                                        user=random.choice(User.objects.all()),
+                                        text=i["text"],
+                                        manga=h,
+                                    )
+                                except TypeError:
+                                    continue
+            return f"Comments count over 3999"
         print("Can't find manga")
 
     @classmethod
     def scrap_manga(cls):
-        for i in range(1, 100):
+        for i in range(1, 1000):
             url = (
                 "https://api.remanga.org/api/titles/recommendations/?&count=20&page="
                 + str(i)

@@ -21,6 +21,14 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         blank=True,
         verbose_name="Картинка",
     )
+    favorite_manga = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="user_favorite_manga",
+        verbose_name="Избранное",
+    )
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

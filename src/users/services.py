@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 
-from common.exceptions import UsernameExistsException
+from common.exceptions import UsernameExistsException, FavoriteMangaExists
 from .models import User
 
 
@@ -14,6 +14,12 @@ class UserService:
 
         return cls.model.objects._create_user(**validated_data)
 
+    
+    @classmethod
+    def add_to_favorite(cls, user, validated_data):
+        user.objects.add(**validated_data)
+
+
     @classmethod
     def generate_token(cls, user: model) -> dict:
         access = AccessToken.for_user(user)
@@ -25,3 +31,5 @@ class UserService:
             "refresh_token": str(refresh),
         }
         return data
+    
+

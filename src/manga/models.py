@@ -32,8 +32,8 @@ class Manga(BaseModel):
     issue_year = models.PositiveIntegerField(null=True, verbose_name="Дата выпуска")
     type = models.CharField(max_length=100, verbose_name="Тип комикса")
     genre = models.ManyToManyField(Genre, verbose_name="Жанр манги")
-    likes = models.PositiveIntegerField(verbose_name="Кол-во лайков")
-    views = models.PositiveIntegerField(verbose_name="Кол-во просмотров")
+    likes = models.PositiveIntegerField(verbose_name="Кол-во лайков", null=True, blank=True)
+    views = models.PositiveIntegerField(verbose_name="Кол-во просмотров", null=True, blank=True)
     rating = models.FloatField(default=0.0, blank=True, verbose_name="Рейтинг")
 
     class Meta:

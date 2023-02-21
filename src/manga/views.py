@@ -5,12 +5,26 @@ from manga.api.serializers import (
     ManagaSerializer,
     CommentSerializer,
     CommentAddSerializer,
+    MangaDetailSerializer,
 )
 
 
 class MangaListApiView(generics.ListAPIView):
     queryset = Manga.objects.filter(is_deleted=False)
     serializer_class = ManagaSerializer
+
+
+class MangaDetailView(generics.RetrieveAPIView):
+    queryset = Manga.objects.filter(is_deleted=False)
+    serializer_class = MangaDetailSerializer
+    lookup_field = "slug"
+
+    def get(self, request, slug):
+        manga = get_object_or_404(Manga, slug=slug)
+        serializer = self.serializer_class(manga, many=False)
+        manga.views += 1
+        manga.save()
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class MangaCommentsView(generics.GenericAPIView):
