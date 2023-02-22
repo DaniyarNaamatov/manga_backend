@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 
-from common.exceptions import UsernameExistsException, FavoriteMangaExists
+from common.exceptions import UsernameExistsException
 from .models import User
 
 

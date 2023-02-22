@@ -33,7 +33,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["username", "favorite_manga"]
+        fields = ["id", "username", "favorite_manga"]
 
 
 class AddToFavoriteSerializer(serializers.ModelSerializer):
