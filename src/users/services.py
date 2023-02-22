@@ -14,11 +14,18 @@ class UserService:
 
         return cls.model.objects._create_user(**validated_data)
 
-    
     @classmethod
-    def add_to_favorite(cls, user, validated_data):
-        user.objects.add(**validated_data)
+    def add_to_favorite(cls, user, manga):
+        user.favorite_manga.add(manga)
 
+    @classmethod
+    def remove_from_favorite(cls, user, manga):
+        user.favorite_manga.remove(manga)
+
+    @classmethod
+    def get_favorites_manga(cls, instance):
+        data = instance.favorite_manga.values("id", "en_name", "slug")
+        return data
 
     @classmethod
     def generate_token(cls, user: model) -> dict:
@@ -31,5 +38,3 @@ class UserService:
             "refresh_token": str(refresh),
         }
         return data
-    
-

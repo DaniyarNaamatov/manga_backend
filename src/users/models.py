@@ -21,9 +21,8 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         blank=True,
         verbose_name="Картинка",
     )
-    favorite_manga = models.ForeignKey(
-        "users.User",
-        on_delete=models.CASCADE,
+    favorite_manga = models.ManyToManyField(
+        "manga.Manga",
         null=True,
         blank=True,
         related_name="user_favorite_manga",

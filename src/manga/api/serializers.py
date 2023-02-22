@@ -53,6 +53,7 @@ class ManagaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Manga
         fields = (
+            "id",
             "en_name",
             "slug",
             "image",
@@ -71,6 +72,7 @@ class MangaDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Manga
         fields = (
+            "id",
             "en_name",
             "ru_name",
             "image",

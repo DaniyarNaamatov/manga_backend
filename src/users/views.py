@@ -48,31 +48,38 @@ class SignInView(generics.GenericAPIView):
         return response.Response(data=serializer.errors)
 
 
-class AddToFavorite(generics.GenericAPIView):
-    queryset = Manga.objects.filter(is_deleted=False)
+class AddToFavorite(generics.CreateAPIView):
+    queryset = User.objects.filter(is_deleted=False)
     serializer_class = AddToFavoriteSerializer
 
     def post(self, request, slug):
-        manga = get_object_or_404(Manga, slug=slug)
+        user = self.request.user
+        manga = Manga.objects.get(slug=slug)
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.update(request.user, serializer.validated_data)
+            UserService.add_to_favorite(user, manga)
 
             return response.Response("OK")
-            
+
+        return response.Response(serializer.errors)
+
+    def delete(self, request, slug):
+        user = self.request.user
+        manga = Manga.objects.get(slug=slug)
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            UserService.remove_from_favorite(user, manga)
+
+            return response.Response("OK")
+
         return response.Response(serializer.errors)
 
 
-# class ProfileView(generics.GenericAPIView):
-#     queryset = User.objects.filter(is_deleted=False)
-#     serializer_class = ProfileSerializer
-
-#     def get(self, request, pk):
-#         user = get_object_or_404(User, pk=pk)
-#         serializer = self.serializer_class(user, many=False)
-#         return response.Response(serializer.data)
-
-class ProfileView(generics.RetrieveAPIView):
+class ProfileView(generics.GenericAPIView):
     queryset = User.objects.filter(is_deleted=False)
-    serializer_class = AddToFavoriteSerializer
-    lookup_field = "id"
+    serializer_class = ProfileSerializer
+
+    def get(self, request, username):
+        user = User.objects.get(username=username)
+        serializer = self.serializer_class(user, many=False)
+        return response.Response(data=serializer.data, status=status.HTTP_200_OK)
